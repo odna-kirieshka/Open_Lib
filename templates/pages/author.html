@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Openlib - {{ title }}</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('index_view') }}">Главная</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('authors_view') }}">Авторы</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ author['name'] }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <img src="{{ author['photo'] }}" class="card-img-top" alt="{{ author['name'] }}"
+          style="height: 500px; object-fit: cover;">
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body">
+          <h1 class="card-title mb-3">{{ author['name'] }}</h1>
+
+          <div class="mb-4">
+            <span class="badge bg-secondary">{{ author['genres'] }}</span>
+          </div>
+
+          <div class="mb-4">
+            <h5>Биография</h5>
+            <p class="card-text">{{ author['biography'] }}</p>
+          </div>
+
+          <div class="mb-4">
+            <h5>Детали</h5>
+            <div class="row">
+              <div class="col-sm-6">
+                <p class="mb-1"><strong>Дата рождения:</strong> {{ author['date_birth'] }}</p>
+                <p class="mb-1"><strong>Дата смерти:</strong> {{ author['date_dead'] }}</p>
+                <p class="mb-1"><strong>Страна:</strong> {{ author['country'] }}</p>
+              </div>
+              <div class="col-sm-6">
+                <p class="mb-1"><strong>Место рождения:</strong> {{ author['place_birth'] }}</p>
+                <p class="mb-1"><strong>Место смерти:</strong> {{ author['place_death'] }}</p>
+                <p class="mb-1"><strong>Пол:</strong> {{ author['gender'] }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4">Книги автора:</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g4">
+      {% for book in author_books %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ similar_author['photo'] }}" class="card_img-top" alt="{{ similar_author['name'] }}" style="height: 300px; object-fit:cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ similar_author['name'] }}</h5>
+            <p class="card-text">{{ similar_author['biography'] }}</p>
+            <a href="{{ url_for('author_view', id=similar_author['id']) }}" class="btn btn-primary w-100">Узнать</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4">Похожие авторы</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+      {% for similar_author in similar_authors %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ similar_author['photo'] }}" class="card-img-top" alt="{{ similar_author['name'] }}" style="height: 300px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ similar_author['name'] }}</h5>
+            <p class="card-text">{{ similar_author['biography'] }}</p>
+            <a href="{{ url_for('author_view', id=similar_author['id']) }}" class="btn btn-primary w-100">Узнать!</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

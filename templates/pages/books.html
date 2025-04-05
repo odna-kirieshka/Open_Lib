@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Openlib - {{ title }}</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1>{{ title }}</h1> <!--сделал надпись такую же, что и название страницы-->
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+    {% for book in books %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="{{ book['cover'] }}" class="card-img-top" alt="{{ book['title'] }}" style="height: 300px; object-fit: cover;">
+        <div class="card-body">
+          <h5 class="card-title">{{ book['title'] }}</h5>
+          <p class="card-text text-muted mb-1">{{ book['author'] }}</p>
+          <span class="badge bg-secondary mb-2">{{ book['genre'] }}</span>
+          <p class="card-text">{{ book['description'] }}</p>
+          <a href="{{ url_for('book_view', id=book['id']) }}" class="btn btn-primary w-100">Читать</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

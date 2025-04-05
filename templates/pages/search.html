@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Openlib – Поиск: {{ query }}</title>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col">
+      <h1>Результаты поиска</h1>
+      <p class="text-muted">По запросу: "{{ query }}"</p>
+    </div>
+  </div>
+
+  {% if books %}
+  <div class="mb-5">
+    <h2 class="mb-4">Книги</h2>
+    <div class="row row-col-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+      {% for book in books %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ book.cover }}" class="card-img-top" alt="{{ book.title }}" style="height: 300px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ book.title }}</h5>
+            <p class="card-text text-muted mb-1">{{ book.author }}</p>
+            <span class="badge bg-secondary mb-2">{{ book.genre }}</span>
+            <a href="{{ url_for('book_view', id=book.id) }}" class="btn btn-primary w-100">Читать</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if authors %}
+  <div class="mb-5">
+    <h2 class="mb-4">Авторы</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-4">
+      {% for author in authors %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ author.photo }}" class="card-img-top" alt="{{ author.name }}" style="height: 300px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ author.name }}</h5>
+            <p class="card-text">{{ author.biography[:100] }}...</p>
+            <a href="{{ url_for('author_view', id=author.id) }}" class="btn btn-primary w-100">Узнать!</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if not books and not authors %}
+  <div class="text-center py-5">
+    <h3 class="text-muted">Ничего не найдено</h3>
+    <p>Попробуйте изменить поисковой запрос</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
