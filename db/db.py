@@ -1,6 +1,7 @@
 import json
 import sqlite3
 from pathlib import Path
+from db.models import BookShare
 
 DB_PATH = Path(__file__).parent / "db.sqlite3"
 
@@ -37,6 +38,9 @@ def init_db():
   age TEXT,
   language TEXT,
   pages INTEGER
+  pdf_link TEXT,
+  FOREIGN KEY (author_id),
+  REFERENCES authors (id)
   )""")
 
   conn.commit()
@@ -85,7 +89,8 @@ def load_data():
           book["rating"],
           book["age"],
           book["language"],
-          book["pages"]
+          book["pages"],
+          book.get('pdf_link', None)
         )
       )
 
@@ -134,6 +139,9 @@ def get_book(book_id):
     result = None
 
   conn.close()
+
+  # book_shares = BookShare.query.filter_by(book_id=book_id).count()
+  result["book_shares"] = BookShare.query.filter_by(book_id=book_id).count()
   return result
 
 
@@ -178,15 +186,7 @@ def get_authors(author_id):
   return result
 
 
-# def create_author_id_column():
-#   conn = get_db()
-#   cur = conn.cursor()
-#   cur.execute('ALTER TABLE books ADD COLUMN author_id INTEGER')
-#   conn.commit()
-#   conn.close()
-
 if __name__ == "__main__":
   init_db()
-  # create_author_id_column()
   load_data()
   print("База данных инициализированна")

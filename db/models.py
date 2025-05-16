@@ -33,6 +33,26 @@ class Book(db.Model):
   age = db.Column(db.Integer)
   language = db.Column(db.String(50))
   pages = db.Column(db.Integer)
+  pdf_link = db.Column(db.String(250))
 
   def __str__(self):
     return self.title
+  
+  def __repr__(self):
+    return f'<Book {self.title}>'
+     
+  
+  
+class BookShare(db.Model):
+    __tablename__ = 'book_shares'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
+    network = db.Column(db.String(20), nullable=False)  # vk, telegram, whatsapp, copy
+    timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
+    
+    # Связь с книгой
+    book = db.relationship('Book', backref=db.backref('shares_rel', lazy='dynamic'))
+    
+    def __repr__(self):
+        return f'<BookShare {self.book_id} - {self.network}>'
