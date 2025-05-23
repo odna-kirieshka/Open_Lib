@@ -1,7 +1,7 @@
 import json
 import sqlite3
 from pathlib import Path
-from db.models import BookShare
+from models import BookShare
 
 DB_PATH = Path(__file__).parent / "db.sqlite3"
 
@@ -37,10 +37,9 @@ def init_db():
   rating TEXT,
   age TEXT,
   language TEXT,
-  pages INTEGER
+  pages INTEGER,
   pdf_link TEXT,
-  FOREIGN KEY (author_id),
-  REFERENCES authors (id)
+  FOREIGN KEY (author_id) REFERENCES authors (id)
   )""")
 
   conn.commit()
@@ -77,7 +76,7 @@ def load_data():
       if author_row:
         author_id = author_row[0]
 
-      cur.execute("""INSERT OR REPLACE INTO books(id, title, author, author_id, cover, year, genre, rating, age, language, pages)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+      cur.execute("""INSERT OR REPLACE INTO books(id, title, author, author_id, cover, year, genre, rating, age, language, pages, pdf_link)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
           book["id"],
           book["title"],
