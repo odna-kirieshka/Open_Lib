@@ -1,7 +1,7 @@
 import json
 import sqlite3
 from pathlib import Path
-from models import BookShare
+from db.models import BookShare
 
 DB_PATH = Path(__file__).parent / "db.sqlite3"
 
